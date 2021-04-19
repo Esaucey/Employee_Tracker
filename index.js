@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 
+let roleStore = [];
 const connection = mysql.createConnection({
     host: 'localhost',
 
@@ -31,6 +32,7 @@ const init = () => {
         'Add roles',
         'Add employees',
         'Delete departments',
+        'Delete roles',
         'Update employee roles',
         'Finish'
       ],
@@ -51,8 +53,8 @@ const init = () => {
             case 'Add roles':
                 addRoles();
                 break;
-            case 'Delete departments':
-                deleteDepartment();
+            case 'Add employees':
+                addEmployees();
                 break;
             case 'Finish':
                 end();
@@ -61,8 +63,6 @@ const init = () => {
                 break;
         } 
     })
-
-    // connection.end();
 }
 
 const viewDepartment = () => {
@@ -133,29 +133,51 @@ const addRoles = () => {
             VALUES ('${answer.title}', '${answer.salary}', '${answer.deptId}');
         `, (err, res) => {
             if (err) throw err;
+            let answerRole = [answer.title, answer.salary, answer.deptId];
+            roleStore.push(answerRole);
+            console.log(roleStore);
             init();
         }
         )
-        
     })
-    
 }
 
 const addEmployees = () => {
-
-}
-
-const deleteDepartment = () => {
-    connection.query('DELETE FROM department WHERE id > 5;',
-        (err, res) => {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "What is the new employee's first name?"
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "What is the new employee's last name?"
+        },
+        {
+            type: 'input',
+            name: 'roleId',
+            message: "What is the new employee's role ID?"
+        },
+        {
+            type: 'input',
+            name: 'managerId',
+            message: "What is the manager ID for the new employee?"
+        }
+    ])
+    .then(answer => {
+        connection.query(`INSERT INTO employee SET ?`, {
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: answer.roleId,
+            manager_id: answer.managerId
+        }
+        , (err, res) => {
             if (err) throw err;
             init();
-        }
-    )
-}
-
-const updateEmployeeRoles = () => {
-
+        })
+    })
 }
 
 const end = () => {
