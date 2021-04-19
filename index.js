@@ -31,9 +31,6 @@ const init = () => {
         'Add departments',
         'Add roles',
         'Add employees',
-        'Delete departments',
-        'Delete roles',
-        'Update employee roles',
         'Finish'
       ],
     })
@@ -47,6 +44,7 @@ const init = () => {
                 break;
             case 'View employees':
                 viewEmployees();
+                break
             case 'Add departments':
                 addDepartments();
                 break;
@@ -135,7 +133,7 @@ const addRoles = () => {
             if (err) throw err;
             let answerRole = [answer.title, answer.salary, answer.deptId];
             roleStore.push(answerRole);
-            console.log(roleStore);
+            // console.log(roleStore);
             init();
         }
         )
