@@ -25,3 +25,9 @@ The user is able to add add departments, employee roles, and the employees.
 After the user finishes all the updates, select Finish to end the prompt.
 
 ![end](assets/screenshot7.PNG)
+
+## Technology
+
+- Javascript
+- Node JS
+- SQL
